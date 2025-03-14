@@ -17,11 +17,11 @@ cd manual-connections
 
 # Feed inputs in EXACT order: username → password → region → confirm (y)
 sudo ./run_setup.sh <<EOF
-$PIA_USER
-$PIA_PASS
-$REGION
-y
-EOF
+# $PIA_USER
+# $PIA_PASS
+# $REGION
+# y
+# EOF
 
 # ---------------------------------------------------------------
 # Post-Setup (Same as Manual Method)
