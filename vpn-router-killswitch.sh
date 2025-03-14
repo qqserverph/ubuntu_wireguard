@@ -48,8 +48,10 @@ chmod +x /tmp/pia-wireguard.sh
 # Generate PIA token (if missing)
 if [ ! -f "$PIA_TOKEN_FILE" ]; then
   echo "Generating PIA token (first-time setup)..."
-  echo -e "YOUR_PIA_USERNAME\nYOUR_PIA_PASSWORD" | /tmp/pia-wireguard.sh --generate-token-only
+  # Run interactively to accept PIA credentials
+  sudo /tmp/pia-wireguard.sh --generate-token-only
   sudo mv /tmp/pia_token "$PIA_TOKEN_FILE"
+  sudo chown $USER:$USER "$PIA_TOKEN_FILE"
 fi
 
 # Generate WireGuard config
