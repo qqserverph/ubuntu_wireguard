@@ -6,7 +6,32 @@
 read -p "Enter your PIA username: " PIA_USER
 read -sp "Enter your PIA password: " PIA_PASS
 echo
-REGION="us_chicago"  # Find regions: https://serverlist.piaservers.net/vpninfo/servers/v6
+
+# List of PIA regions to test
+regions=("us_chicago" "us_new_york" "us_silicon_valley" "us_seattle" "us_washington_dc")
+
+# Function to get the ping time for a region
+get_ping_time() {
+  ping -c 3 $1.piaservers.net | tail -1| awk '{print $4}' | cut -d '/' -f 2
+}
+
+# Determine the fastest region
+fastest_region=""
+fastest_time=9999
+echo "Testing regions for latency..."
+for region in "${regions[@]}"; do
+  ping_time=$(get_ping_time $region)
+  echo "Region: $region, Ping: $ping_time ms"
+  if (( $(echo "$ping_time < $fastest_time" | bc -l) )); then
+    fastest_time=$ping_time
+    fastest_region=$region
+  fi
+done
+echo "Fastest region is $fastest_region with a ping time of $fastest_time ms"
+
+read -p "Enter your preferred PIA region (default is fastest region $fastest_region): " REGION
+REGION=${REGION:-$fastest_region}
+
 LAN_INTERFACE="eth1" # Confirm with `ip a`
 
 # ---------------------------------------------------------------
@@ -24,26 +49,4 @@ $REGION
 y
 EOF
 
-# ---------------------------------------------------------------
-# Post-Setup (Same as Manual Method)
-# ---------------------------------------------------------------
-WG_CONF=$(sudo ls /etc/wireguard/pia_*.conf | head -1)
-WG_CONF_NAME=$(basename $WG_CONF .conf)
-
-# Enable IP forwarding
-echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
-
-# Configure NAT and killswitch
-sudo iptables -t nat -A POSTROUTING -o $WG_CONF_NAME -j MASQUERADE
-sudo iptables -P FORWARD DROP
-sudo iptables -A FORWARD -i $LAN_INTERFACE -o $WG_CONF_NAME -j ACCEPT
-sudo iptables -A FORWARD -i $WG_CONF_NAME -o $LAN_INTERFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo netfilter-persistent save
-
-# Enable WireGuard
-sudo systemctl enable --now wg-quick@$WG_CONF_NAME
-
-echo "----------------------------------------"
-echo "VPN Router Setup Complete!"
-echo "----------------------------------------"
+# ------------------------------------------------ ▋
