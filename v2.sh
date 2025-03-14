@@ -3,30 +3,27 @@
 # ---------------------------------------------------------------
 # Configuration (Edit these!)
 # ---------------------------------------------------------------
-export PIA_USER="YOUR_PIA_USERNAME"       # Replace with your credentials
-export PIA_PASS="YOUR_PIA_PASSWORD"
-LAN_INTERFACE="eth1"                      # Confirm with `ip a`
-REGION="us_chicago"                       # Change region as needed
+PIA_USER="YOUR_PIA_USERNAME"       # Replace with your credentials
+PIA_PASS="YOUR_PIA_PASSWORD"
+REGION="us_chicago"                # Check regions with ./get_region.sh
+LAN_INTERFACE="eth1"               # Confirm with `ip a`
 
 # ---------------------------------------------------------------
-# Install Dependencies
-# ---------------------------------------------------------------
-sudo apt update -y
-sudo apt install -y git wireguard iptables-persistent resolvconf
-
-# ---------------------------------------------------------------
-# Clone & Run PIA Script (Non-Interactive)
+# Non-Interactive Setup (No Prompts)
 # ---------------------------------------------------------------
 git clone https://github.com/pia-foss/manual-connections.git
 cd manual-connections
 
-# Force non-interactive mode with predefined region
+# Feed inputs in exact order: username → password → region → confirm
 sudo ./run_setup.sh <<EOF
+$PIA_USER
+$PIA_PASS
 $REGION
+y
 EOF
 
 # ---------------------------------------------------------------
-# Post-Configuration (same as before)
+# Post-Setup (same as before)
 # ---------------------------------------------------------------
 WG_CONF=$(ls /etc/wireguard/pia_* | head -1)
 WG_CONF_NAME=$(basename $WG_CONF .conf)
