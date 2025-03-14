@@ -44,8 +44,8 @@ chmod +x /tmp/pia-wireguard.sh
 # Generate PIA token (if missing)
 if [ ! -f "$PIA_TOKEN_FILE" ]; then
   echo "Generating PIA token (first-time setup)..."
-  /tmp/pia-wireguard.sh --generate-token-only
-  mv /tmp/pia_token "$PIA_TOKEN_FILE"
+  echo -e "YOUR_PIA_USERNAME\nYOUR_PIA_PASSWORD" | /tmp/pia-wireguard.sh --generate-token-only
+  sudo mv /tmp/pia_token "$PIA_TOKEN_FILE"
 fi
 
 # Generate WireGuard config
@@ -62,7 +62,8 @@ sudo iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
 setup_kill_switch
 
 # Enable WireGuard on boot
-WG_CONF_NAME=$(ls /etc/wireguard/PIA-*.conf | xargs basename | sed 's/.conf//')
+sleep 5
+WG_CONF_NAME=$(sudo ls /etc/wireguard/PIA-*.conf | xargs basename | sed 's/.conf//')
 sudo systemctl enable --now wg-quick@"$WG_CONF_NAME"
 
 # Output Status
