@@ -16,7 +16,7 @@ git clone https://github.com/pia-foss/manual-connections.git
 cd manual-connections
 
 # Feed inputs in EXACT order: username → password → region → confirm (y)
-sudo ./run_setup.sh <<EOF
+sudo ./run_setup.sh #<<EOF
 # $PIA_USER
 # $PIA_PASS
 # $REGION
