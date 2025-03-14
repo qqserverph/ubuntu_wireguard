@@ -38,7 +38,7 @@ sudo apt upgrade -y
 sudo apt install -y wireguard resolvconf jq curl iptables-persistent
 
 # Download PIA's WireGuard script
-wget -O /tmp/pia-wireguard.sh https://raw.githubusercontent.com/qqserverph/manual-connections/refs/heads/master/connect_to_wireguard_with_token.sh
+wget -4 -O /tmp/pia-wireguard.sh https://raw.githubusercontent.com/qqserverph/manual-connections/refs/heads/master/connect_to_wireguard_with_token.sh
 chmod +x /tmp/pia-wireguard.sh
 
 # Generate PIA token (if missing)
