@@ -3,8 +3,9 @@
 # ---------------------------------------------------------------
 # Configuration (REPLACE THESE!)
 # ---------------------------------------------------------------
-PIA_USER="YOUR_PIA_USERNAME"
-PIA_PASS="YOUR_PIA_PASSWORD"
+read -p "Enter your PIA username: " PIA_USER
+read -sp "Enter your PIA password: " PIA_PASS
+echo
 REGION="us_chicago"  # Find regions: https://serverlist.piaservers.net/vpninfo/servers/v6
 LAN_INTERFACE="eth1" # Confirm with `ip a`
 
