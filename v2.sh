@@ -11,9 +11,9 @@ echo
 regions=("us_chicago" "us_new_york" "us_silicon_valley" "us_seattle" "us_washington_dc")
 
 # Function to get the ping time for a region
-get_ping_time() {
-  ping -c 3 $1.piaservers.net | tail -1| awk '{print $4}' | cut -d '/' -f 2
-}
+#get_ping_time() {
+#  ping -c 3 $1.piaservers.net | tail -1| awk '{print $4}' | cut -d '/' -f 2
+#}
 
 # Determine the fastest region
 fastest_region=""
