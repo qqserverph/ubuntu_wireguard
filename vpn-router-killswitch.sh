@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Add to the top of your script:
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+
 # --------------------------------------------
 # Configuration Variables (Edit These!)
 # --------------------------------------------
